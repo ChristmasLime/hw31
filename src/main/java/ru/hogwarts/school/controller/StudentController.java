@@ -3,6 +3,7 @@ package ru.hogwarts.school.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.services.StudentService;
 
@@ -61,6 +62,7 @@ public class StudentController {
         }
         return ResponseEntity.ok(Collections.emptyList());
     }
+
     @GetMapping("age")
     public ResponseEntity<Collection<Student>> getStudentsByAgeRange(
             @RequestParam int minAge,
@@ -70,5 +72,12 @@ public class StudentController {
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
+
+    @GetMapping("{id}/faculty")
+    public ResponseEntity<Faculty> getStudentFaculty(@PathVariable Long id) {
+        Faculty faculty = service.getStudentFaculty(id);
+        return ResponseEntity.ok(faculty);
+    }
+
 }
 
