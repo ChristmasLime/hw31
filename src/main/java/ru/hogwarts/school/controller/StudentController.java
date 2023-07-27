@@ -61,5 +61,14 @@ public class StudentController {
         }
         return ResponseEntity.ok(Collections.emptyList());
     }
+    @GetMapping("age")
+    public ResponseEntity<Collection<Student>> getStudentsByAgeRange(
+            @RequestParam int minAge,
+            @RequestParam int maxAge) {
+        if (minAge <= maxAge) {
+            return ResponseEntity.ok(service.getStudByAgeBetween(minAge, maxAge));
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    }
 }
 
