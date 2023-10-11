@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Faculty;
 
+import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.FacultyRepository;
 
 import java.util.Collection;
@@ -25,9 +26,8 @@ public class FacultyService {
     }
 
     public Faculty findFacul(long id) {
-
         return facultyRepository.findById(id).orElseThrow(
-                ()->new NoSuchElementException("Факультет с указанным id не найден"));
+                () -> new NoSuchElementException("Факультет с указанным id не найден"));
     }
 
     public Faculty editFacul(Faculty faculty) {
@@ -44,5 +44,18 @@ public class FacultyService {
 
     public Collection<Faculty> getFacultiesByColor(String color) {
         return facultyRepository.getFaculByColor(color);
+    }
+
+    public Collection<Faculty> getFacultiesByNameOrColor(String searchString) {
+        return facultyRepository.findByNameIgnoreCaseOrColorIgnoreCase(searchString, searchString);
+    }
+
+
+    public Collection<Student> getFacultyStudents(Long facultyId) {
+        Faculty faculty = facultyRepository.findFacultyById(facultyId);
+        if (faculty == null) {
+            throw new NoSuchElementException("Факультет с указанным ID не найден");
+        }
+        return faculty.getStudents();
     }
 }
